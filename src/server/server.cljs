@@ -126,7 +126,7 @@
               (chsk-send! uid
                           [:some/broadcast
                            {:what-is-this "An async broadcast pushed from server"
-                            :how-often "Every 10 seconds"
+                            :how-often "Every 10 seconds..."
                             :to-whom uid
                             :i i}]))))]
 
@@ -163,7 +163,8 @@
 
 (defonce router_ (atom nil))
 
-(defn  stop-router! [] (when-let [stop-fn @router_] (stop-fn)))
+(defn stop-router! []
+  (when-let [stop-fn @router_] (stop-fn)))
 
 (defn start-router! []
   (stop-router!)
@@ -172,7 +173,8 @@
 
 (defonce web-server_ (atom nil)) ; {:server _ :port _ :stop-fn (fn [])}
 
-(defn stop-web-server! [] (when-let [m @web-server_] ((:stop-fn m))))
+(defn stop-web-server! []
+  (when-let [m @web-server_] ((:stop-fn m))))
 
 (defn start-web-server! [& [port]]
   (stop-web-server!)
@@ -186,6 +188,9 @@
   (start-router!)
   (start-web-server!)
   (start-example-broadcaster!))
+
+(defn ^:dev/after-load reload! []
+  (println "Code updated."))
 
 (defn main []
   (start!))

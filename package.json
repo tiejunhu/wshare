@@ -1,7 +1,8 @@
 {
     "license": "MIT",
     "scripts": {
-        "watch": "shadow-cljs watch"
+        "watch": "shadow-cljs watch",
+        "build": "shadow-cljs compile"
     },
     "devDependencies": {
         "source-map-support": "^0.5.19"
