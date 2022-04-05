@@ -37,27 +37,16 @@
   []
   (debugf "Landing page handler")
   (let [af-token csrf/*anti-forgery-token*]
-    (-> [:html
-         [:body
-          [:div {:id  "__anti-forgery-token" :data-csrf-token af-token}]
-          [:h1 "Sample Page"]
-          [:hr]
-          [:div {:id "app"}]
-          [:script {:src "client.js"}]    ; Include our cljs target
-          ]]
-        (hiccups/html)
+    (-> [:body
+         [:div {:id  "__anti-forgery-token" :data-csrf-token af-token}]
+         [:h1 "Sample Page"]
+         [:hr]
+         [:div {:id "app"}]
+         [:script {:src "client.js"}]    ; Include our cljs target
+         ]
+        (hiccups/html5)
         (m-resp/ok)
         (m-resp/content-type "text/html"))))
-
-(defn login-handler
-  "Here's where you'll add your server-side login/auth procedure (Friend, etc.).
-  In our simplified example we'll just always successfully authenticate the user
-  with whatever user-id they provided in the auth request."
-  [ring-req]
-  (let [{:keys [session params]} ring-req
-        {:keys [user-id]}        params]
-    (debugf "Login request: %s" params)
-    {:status 200 :session (assoc session :uid user-id)}))
 
 (let [packer :edn ; Default packer, a good choice in most cases
       {:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn connected-uids]}
@@ -77,8 +66,7 @@
   ["/" {""      {:get (wrap-macchiato-res landing-pg-handler)}
         "chsk"  {:get  ajax-get-or-ws-handshake
                  :post ajax-post
-                 :ws   ajax-get-or-ws-handshake}
-        "login" {:post (wrap-macchiato-res login-handler)}}])
+                 :ws   ajax-get-or-ws-handshake}}])
 
 (defn router [req res raise]
   (debugf "Request: %s" (select-keys req [:request-method :websocket? :uri :params :session]))

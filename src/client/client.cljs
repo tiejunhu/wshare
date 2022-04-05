@@ -22,11 +22,8 @@
     (rdom/unmount-component-at-node root-el)
     (rdom/render [views/main-panel] root-el)))
 
-(defn my-test []
-  (rtc/create-peer-connection))
-
 (defn main []
-  (my-test)
+  (rtc/test-rtc)
   ;; 这个事件要同步分发，这样才能保证db在所有的其它事件之前初始化完
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)

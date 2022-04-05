@@ -3,3 +3,5 @@ target/
 .clj-kondo/
 node_modules/
 .shadow-cljs/
+yarn-error.log
+.lein-failures
